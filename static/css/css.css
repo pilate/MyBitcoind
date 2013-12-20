@@ -1,0 +1,10 @@
+.row {
+    min-width:90%;
+}
+.top-bar {
+    margin-bottom:10px;
+}
+
+.top-bar-section ul li > a.bold {
+    font-size:1.2rem;
+}
