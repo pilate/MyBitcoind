@@ -1,9 +1,13 @@
+from bitcoinrpc.authproxy import AuthServiceProxy
+
 import bottle as b
 
+
+# Setup
 b.TEMPLATE_PATH.append("templates")
+access = AuthServiceProxy("http://Pilate:password@127.0.0.1:8332")
 
 # Static file routes
-
 @b.get('/static/css/<filename:re:.*\.css>')
 def static_css(filename):
     return b.static_file(filename, root='static/css')
@@ -12,18 +16,29 @@ def static_css(filename):
 def static_js(filename):
     return b.static_file(filename, root='static/js')
 
-# Page routes
+# Utility
+def get_balance():
+    return float(access.getbalance("", 0))
 
+def get_context():
+    return {
+        "balance": get_balance()
+    }  
+
+# Page routes
 @b.route('/')
 def index():
-    return b.template('index', {
-        "balance": 0.1
-    })
+    out_obj = get_context()
+    return b.template('index', out_obj)
 
 @b.route('/addresses/')
 def index():
-    return b.template('index', {
-        "balance": 0.1
-    })
+    out_obj = get_context()
+    addresses = access.listreceivedbyaddress(0, True)
+    addresses = sorted(addresses, key=lambda k: k["amount"], reverse=True)
+    for address in addresses:
+        address["amount"] = '{0:.8f}'.format(address["amount"])
+    out_obj["addresses"] = addresses
+    return b.template('addresses', out_obj)
 
-b.run(host='localhost', port=8080)
+b.run(host='loathes.asia', port=8080, debug=True)
