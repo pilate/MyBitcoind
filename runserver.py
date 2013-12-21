@@ -1,4 +1,5 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
+from bitcoinrpc.authproxy import JSONRPCException
 
 import bottle as b
 
@@ -24,28 +25,29 @@ def get_balance():
 
 def get_context():
     return {
-        "balance": get_balance()
+        "balance": get_balance(),
+        "message": ""
     }  
 
-# Page routes
-@b.route('/')
+# Address related routes
+@b.get('/')
 def index():
     out_obj = get_context()
     return b.template('index', out_obj)
 
-@b.route('/addresses/list/')
+@b.get('/addresses/list/')
 def address_list():
     out_obj = get_context()
     out_obj["addresses"] = access.getaddressesbyaccount("")
     return b.template('address_list', out_obj)
 
-@b.route('/addresses/unspent/')
+@b.get('/addresses/unspent/')
 def address_unspent():
     out_obj = get_context()
     out_obj["unspent"] = access.listunspent(0)
     return b.template('address_unspent', out_obj)
 
-@b.route('/addresses/received/')
+@b.get('/addresses/received/')
 def address_received():
     out_obj = get_context()
     addresses = access.listreceivedbyaddress(0)
@@ -55,9 +57,27 @@ def address_received():
     out_obj["addresses"] = addresses
     return b.template('address_received', out_obj)
 
-@b.route('/import/list/')
+# Import related routes
+@b.get('/import/list/')
 def import_list():
     out_obj = get_context()
     return b.template('import_list', out_obj)
 
-b.run(host='loathes.asia', port=8080, debug=True)
+@b.post('/import/list/')
+def import_list():
+    out_obj = get_context()
+    form_addresses = b.request.forms.get('privkeys')
+    split_addresses = form_addresses.split("\n");
+    clean_list = map(str.strip, split_addresses)
+    added = 0
+    for key in clean_list:
+        try:
+            access.importprivkey(key, "", False)
+        except JSONRPCException:
+            continue
+        else:
+            added += 1
+    out_obj["message"] = "Imported {0} new keys.".format(added)
+    return b.template('import_list', out_obj)
+
+b.run(host='loathes.asia', port=8080, debug=True, reloader=True)
