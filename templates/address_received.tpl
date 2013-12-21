@@ -1,6 +1,6 @@
 %rebase base balance=balance
 
-<h1>Account Addresses</h1>
+<h1>Used Addresses</h1>
 
 <table class="sortable">
     <thead>

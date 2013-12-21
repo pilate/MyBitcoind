@@ -13,7 +13,7 @@
     <nav class="top-bar" data-topbar>
         <ul class="title-area">
             <li class="name">
-                <h1><a href="#">Myd</a></h1> 
+                <h1><a href="#">MyBitcoind</a></h1> 
             </li>
             <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a>
             </li>
@@ -26,7 +26,24 @@
                 </li>
             </ul>
             <ul class="left">
-                <li><a href="#">Address List</a>
+                <li class="has-dropdown">
+                    <a href="#">Addresses</a>
+                        <ul class="dropdown">
+                            <li><a href="/addresses/list/">Address List</a></li>
+                            <li><a href="/addresses/unspent/">Unspent Outputs</a></li>
+                            <li><a href="/addresses/received/">Received</a></li>
+                        </ul>
+                    </li>
+                </li>
+            </ul>
+            <ul class="left">
+                <li class="has-dropdown">
+                    <a href="#">Import</a>
+                        <ul class="dropdown">
+                            <li><a href="/import/list/">List</a></li>
+                            <li><a href="/import/wallet/">Wallet</a></li>
+                        </ul>
+                    </li>
                 </li>
             </ul>
         </section>
