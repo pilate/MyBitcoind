@@ -1,6 +1,7 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
 from bitcoinrpc.authproxy import JSONRPCException
 from socket import timeout
+from socket import error
 
 import bottle as b
 
@@ -24,13 +25,22 @@ def get_balance(rpc):
     return balance
 
 def get_context():
-    message = ""
+    message = None
     try:
         rpc_connection = AuthServiceProxy("http://Pilate:password@127.0.0.1:8332", timeout=1)
         rpc_connection.getinfo()
     except timeout:
         rpc_connection = None
-        message = "Bitcoind connection failed."
+        message = {
+            "text": "Bitcoind connection timeout.",
+            "type": "warning"
+        }
+    except error:
+        rpc_connection = None
+        message = {
+            "text": "Bitcoind connection refused.",
+            "type": "warning"
+        }
 
     if rpc_connection:
         balance = get_balance(rpc_connection)
@@ -86,6 +96,7 @@ def address_received():
 @b.get('/import/list/')
 def import_list():
     out_obj = get_context()
+    out_obj["privkeys"] = ""
     return b.template('import_list', out_obj)
 
 @b.post('/import/list/')
@@ -108,7 +119,10 @@ def import_list():
                 continue
             else:
                 added += 1
-        out_obj["message"] = "Imported {0} new keys. Rescan started.".format(added)
+        out_obj["message"] = {
+            "text": "Imported {0} new keys. Rescan started.".format(added),
+            "type": "info"
+        }
     else:
         out_obj["privkeys"] = form_addresses
     return b.template('import_list', out_obj)

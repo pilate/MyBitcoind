@@ -1,4 +1,4 @@
-%rebase base balance=balance
+%rebase base balance=balance, message=message
 
 <h1>Unspent Outputs</h1>
 

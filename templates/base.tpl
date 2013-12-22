@@ -51,6 +51,16 @@
 
     <div class="row">
         <div class="large-12 medium-12 columns">
+% if message:
+            <div class="row">
+                <div class="large-4 medium-4 columns">
+                    <div data-alert class="alert-box {{ message["type"] }} radius">
+                        {{ message["text"] }}
+                        <a href="#" class="close">&times;</a>
+                    </div>
+                </div>
+            </div>
+% end
             %include
         </div>
     </div>
