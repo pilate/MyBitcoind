@@ -1,2 +1,3 @@
+%rebase base balance=balance, message=message
+
 Index
-%rebase base balance=balance
