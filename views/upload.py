@@ -1,22 +1,23 @@
+from plugins import BitcoinRPCPlugin
 from util import get_context
 
 import bottle as b
 
 
-import_app = b.Bottle()
+upload_app = b.Bottle()
+upload_app.install(BitcoinRPCPlugin())
 
 
-@import_app.get('/list/')
-def import_list():
-    out_obj = get_context()
+@upload_app.get('/list/')
+def import_list(rpc):
+    out_obj = get_context(rpc)
     out_obj["privkeys"] = ""
     return b.template('import_list', out_obj)
 
-@import_app.post('/list/')
-def import_list():
-    out_obj = get_context()
+@upload_app.post('/list/')
+def import_list(rpc):
+    out_obj = get_context(rpc)
     out_obj["privkeys"] = ""
-    rpc = out_obj["rpc"]
     form_addresses = b.request.forms.get('privkeys')
     split_addresses = form_addresses.split("\n");
     clean_list = map(str.strip, split_addresses)

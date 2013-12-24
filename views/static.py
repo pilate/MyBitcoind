@@ -1,9 +1,11 @@
+from plugins import BitcoinRPCPlugin
 from util import get_context
 
 import bottle as b
 
 
 static_app = b.Bottle()
+static_app.install(BitcoinRPCPlugin())
 
 
 @static_app.get('/css/<filename:re:.*\.css>')

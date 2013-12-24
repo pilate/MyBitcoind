@@ -10,11 +10,10 @@ def get_balance(rpc):
     balance = sum(map(lambda u: u["amount"], unspent))
     return balance
 
-def get_context():
+def get_context(rpc):
     message = None
     try:
-        rpc_connection = AuthServiceProxy("http://Pilate:password@127.0.0.1:8332", timeout=1)
-        rpc_connection.getinfo()
+        rpc.getinfo()
     except timeout:
         rpc_connection = None
         message = {
@@ -28,13 +27,13 @@ def get_context():
             "type": "warning"
         }
 
-    if rpc_connection:
-        balance = get_balance(rpc_connection)
+    if rpc:
+        balance = get_balance(rpc)
     else:
         balance = "Error"
 
     return {
         "balance": balance,
         "message": message,
-        "rpc": rpc_connection
+        "rpc": rpc
     }  
