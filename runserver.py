@@ -2,6 +2,7 @@ from views.static import static_app
 from views.address import address_app
 from views.upload import upload_app
 
+from plugins import BitcoinRPCPlugin
 from util import get_context
 
 import bottle as b
