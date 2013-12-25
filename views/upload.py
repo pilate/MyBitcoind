@@ -11,12 +11,12 @@ upload_app.install(BitcoinRPCPlugin())
 upload_app.install(ContextPlugin())
 
 
-@upload_app.get('/list/')
+@upload_app.get("/list/")
 def import_list(rpc, context):
     context["privkeys"] = ""
-    return b.template('import_list', context)
+    return b.template("import_list", context)
 
-@upload_app.post('/list/')
+@upload_app.post("/list/")
 def import_list(rpc, context):
     context["privkeys"] = ""
     form_addresses = b.request.forms.get("privkeys")
@@ -37,14 +37,14 @@ def import_list(rpc, context):
         }
     else:
         context["privkeys"] = form_addresses
-    return b.template('import_list', context)
+    return b.template("import_list", context)
 
-@upload_app.get('/wallet/')
+@upload_app.get("/wallet/")
 def import_wallet(rpc, context):
-    return b.template('import_wallet', context)
+    return b.template("import_wallet", context)
 
-@upload_app.post('/wallet/')
+@upload_app.post("/wallet/")
 def import_wallet(rpc, context):
     post_file = b.request.files.get("file")
     file_data = post_file.file.read()
-    return b.template('import_wallet', context)
+    return b.template("import_wallet", context)

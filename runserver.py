@@ -15,15 +15,15 @@ app.install(BitcoinRPCPlugin())
 app.install(ContextPlugin())
 
 b.TEMPLATE_PATH.append("templates")
-b.BaseTemplate.defaults['get_url'] = app.get_url
+b.BaseTemplate.defaults["get_url"] = app.get_url
 
 # Views Setup
 app.mount("/addresses/", address_app)
 app.mount("/import/", upload_app)
 app.mount("/static/", static_app)
 
-@app.get('/')
+@app.get("/")
 def index(rpc, context):
-    return b.template('index', context)
+    return b.template("index", context)
 
-app.run(host='0.0.0.0', port=8080, debug=True, reloader=True)
+app.run(host="0.0.0.0", port=8080, debug=True, reloader=True)
