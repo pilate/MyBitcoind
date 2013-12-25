@@ -25,17 +25,14 @@ def import_list(rpc):
     if rpc:
         added = 0
         for key in clean_list:
-            rescan = False
-            if key == clean_list[-1]:
-                rescan = True
             try:
-                rpc.importprivkey(key, "", rescan)
+                rpc.importprivkey(key, "", False)
             except JSONRPCException:
                 continue
             else:
                 added += 1
         out_obj["message"] = {
-            "text": "Imported {0} new keys. Rescan started.".format(added),
+            "text": "Imported {0} new keys.".format(added),
             "type": "info"
         }
     else:
