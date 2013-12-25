@@ -1,6 +1,4 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
-from socket import timeout
-from socket import error
 
 
 # Utility
@@ -13,26 +11,16 @@ def get_context(rpc):
     message = None
     try:
         rpc.getinfo()
-    except timeout:
-        rpc_connection = None
-        message = {
-            "text": "Bitcoind connection timeout.",
-            "type": "warning"
-        }
-    except error:
-        rpc_connection = None
-        message = {
-            "text": "Bitcoind connection refused.",
-            "type": "warning"
-        }
-
-    if rpc:
-        balance = get_balance(rpc)
-    else:
+    except:
         balance = "Error"
+        message = {
+            "text": "Bitcoind connection error.",
+            "type": "warning"
+        }
+    else:
+        balance = get_balance(rpc)
 
     return {
         "balance": balance,
         "message": message,
-        "rpc": rpc
     }  
