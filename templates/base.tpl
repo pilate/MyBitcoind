@@ -32,6 +32,7 @@
                             <li><a href="/addresses/list/">Address List</a></li>
                             <li><a href="/addresses/unspent/">Unspent Outputs</a></li>
                             <li><a href="/addresses/received/">Received</a></li>
+                            <li><a href="/addresses/recent/">Recent Transactions</a></li>
                         </ul>
                     </li>
                 </li>
