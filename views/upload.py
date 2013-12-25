@@ -1,3 +1,4 @@
+from bitcoinrpc.authproxy import JSONRPCException
 from plugins import BitcoinRPCPlugin
 from util import get_context
 

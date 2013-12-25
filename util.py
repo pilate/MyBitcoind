@@ -1,5 +1,4 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
-from bitcoinrpc.authproxy import JSONRPCException
 from socket import timeout
 from socket import error
 

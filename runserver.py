@@ -2,7 +2,6 @@ from views.static import static_app
 from views.address import address_app
 from views.upload import upload_app
 
-from plugins import BitcoinRPCPlugin
 from util import get_context
 
 import bottle as b
@@ -25,4 +24,4 @@ def index(rpc):
     out_obj = get_context(rpc)
     return b.template('index', out_obj)
 
-app.run(host='loathes.asia', port=8080, debug=True, reloader=True)
+app.run(host='0.0.0.0', port=8080, debug=True, reloader=True)

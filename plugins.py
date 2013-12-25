@@ -13,16 +13,13 @@ class BitcoinRPCPlugin(object):
         pass
 
     def setup(self, app):
-        print "Plugin setup"
         for other in app.plugins:
             if not isinstance(other, BitcoinRPCPlugin): continue
             if other.keyword == self.keyword:
                 raise PluginError("Found conflicting bitcoinrpc plugin.")
 
     def apply(self, callback, route):
-        print "Plugin apply"
         args = inspect.getargspec(route.callback)[0]
-        print args
         if self.keyword not in args:
             return callback
 
