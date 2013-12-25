@@ -2,15 +2,13 @@ from bitcoinrpc.authproxy import AuthServiceProxy
 from bottle import PluginError
 
 import inspect
+import settings
 
 
 class BitcoinRPCPlugin(object):
     name = "bitcoinrpc"
     keyword = "rpc"
     api = 2
-
-    def __init__(self):
-        pass
 
     def setup(self, app):
         for other in app.plugins:
@@ -24,9 +22,9 @@ class BitcoinRPCPlugin(object):
             return callback
 
         def wrapper(*args, **kwargs):
-            print "Wrapper apply"
-            kwargs[self.keyword] = AuthServiceProxy("http://Pilate:password@127.0.0.1:8332")
+            kwargs[self.keyword] = AuthServiceProxy(settings.rpc_connect)
             rv = callback(*args, **kwargs)
+            kwargs[self.keyword]._AuthServiceProxy__conn.close()
             return rv
 
         return wrapper
