@@ -1,5 +1,6 @@
 from bitcoinrpc.authproxy import AuthServiceProxy
 from bottle import PluginError
+from util import get_context
 
 import inspect
 import settings

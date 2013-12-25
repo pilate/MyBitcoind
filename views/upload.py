@@ -19,7 +19,7 @@ def import_list(rpc, context):
 @upload_app.post('/list/')
 def import_list(rpc, context):
     context["privkeys"] = ""
-    form_addresses = b.request.forms.get('privkeys')
+    form_addresses = b.request.forms.get("privkeys")
     split_addresses = form_addresses.split("\n");
     clean_list = map(str.strip, split_addresses)
     if rpc:
@@ -38,3 +38,13 @@ def import_list(rpc, context):
     else:
         context["privkeys"] = form_addresses
     return b.template('import_list', context)
+
+@upload_app.get('/wallet/')
+def import_wallet(rpc, context):
+    return b.template('import_wallet', context)
+
+@upload_app.post('/wallet/')
+def import_wallet(rpc, context):
+    post_file = b.request.files.get("file")
+    file_data = post_file.file.read()
+    return b.template('import_wallet', context)
