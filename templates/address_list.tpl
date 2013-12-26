@@ -5,7 +5,7 @@
 <table class="sortable">
     <thead>
         <tr>
-            <th data-sort="string" data-sort-default="desc">Address ({{ len(addresses) }})</th>
+            <th data-sort="string">Address ({{ len(addresses) }})</th>
         </tr>
     </thead>
     <tbody>

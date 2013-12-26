@@ -18,7 +18,7 @@ def from_timestamp(time):
 def address_list(rpc, context):
     addresses = []
     if rpc:
-        addresses = rpc.getaddressesbyaccount("")
+        addresses = sorted(rpc.getaddressesbyaccount(""))
     context["addresses"] = addresses
     return b.template("address_list", context)
 
