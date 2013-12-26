@@ -24,6 +24,11 @@ app.mount("/static/", static_app)
 
 @app.get("/")
 def index(rpc, context):
+    if rpc:
+        context["address_count"] = len(rpc.getaddressesbyaccount(""))
+        context["unspent_outputs"] = len(rpc.listunspent(0))
+        received_addresses = rpc.listreceivedbyaddress(0)
+        context["total_received"] = sum(map(lambda r: r["amount"], received_addresses))
     return b.template("index", context)
 
 app.run(host="0.0.0.0", port=8080, debug=True, reloader=True)
