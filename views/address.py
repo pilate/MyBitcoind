@@ -56,20 +56,24 @@ def address_recent(rpc, context):
                     "categories": [],
                     "amounts": []
                 }
+
+            if "blocktime" in transaction:
+                timestamp = transaction["blocktime"]
+            elif "time" in transaction:
+                timestamp = transaction["time"]
+
+            transactions[txid]["realtimestamp"] = timestamp
+            transactions[txid]["realtime"] = from_timestamp(timestamp)
             transactions[txid]["addresses"].append(transaction["address"])
             transactions[txid]["categories"].append(transaction["category"])
             transactions[txid]["amounts"].append(transaction["amount"])
-            if "blocktime" in transaction:
-                transactions[txid]["realtimestamp"] = transaction["blocktime"]
-                transactions[txid]["realtime"] = from_timestamp(transaction["blocktime"])
-            elif "time" in transaction:
-                transactions[txid]["realtimestamp"] = transaction["time"]
-                transactions[txid]["realtime"] = from_timestamp(transaction["time"])
+
         grouped = []
         for txid, data in transactions.iteritems():
             data["txid"] = txid
             grouped.append(data)
         
         recent = sorted(grouped, key=lambda r: r["realtimestamp"], reverse=True)
+
     context["recent"] = recent
     return b.template("address_recent", context)
