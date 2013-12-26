@@ -45,15 +45,31 @@ def address_received(rpc, context):
 def address_recent(rpc, context):
     recent = []
     if rpc:
+        transactions = {}
         recent = rpc.listtransactions("", 50)
         recent = filter(lambda r: "otheraccount" not in r, recent)
         for transaction in recent:
+            txid = transaction["txid"]
+            if txid not in transactions:
+                transactions[txid] = {
+                    "addresses": [],
+                    "categories": [],
+                    "amounts": []
+                }
+            transactions[txid]["addresses"].append(transaction["address"])
+            transactions[txid]["categories"].append(transaction["category"])
+            transactions[txid]["amounts"].append(transaction["amount"])
             if "blocktime" in transaction:
-                transaction["realtimestamp"] = transaction["blocktime"]
-                transaction["realtime"] = from_timestamp(transaction["blocktime"])
+                transactions[txid]["realtimestamp"] = transaction["blocktime"]
+                transactions[txid]["realtime"] = from_timestamp(transaction["blocktime"])
             elif "time" in transaction:
-                transaction["realtimestamp"] = transaction["time"]
-                transaction["realtime"] = from_timestamp(transaction["time"])
-        recent = sorted(recent, key=lambda r: r["realtimestamp"], reverse=True)
+                transactions[txid]["realtimestamp"] = transaction["time"]
+                transactions[txid]["realtime"] = from_timestamp(transaction["time"])
+        grouped = []
+        for txid, data in transactions.iteritems():
+            data["txid"] = txid
+            grouped.append(data)
+        
+        recent = sorted(grouped, key=lambda r: r["realtimestamp"], reverse=True)
     context["recent"] = recent
     return b.template("address_recent", context)
