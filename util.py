@@ -19,8 +19,10 @@ def get_context(rpc):
         }
     else:
         balance = get_balance(rpc)
+        addresses = rpc.getaddressesbyaccount("")
 
     return {
         "balance": balance,
         "message": message,
+        "addresses": addresses
     }  
